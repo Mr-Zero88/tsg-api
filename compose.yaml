@@ -1,0 +1,24 @@
+services:
+  lan-portal:
+    image: nginx:alpine
+    restart: unless-stopped
+    volumes:
+      - ./html:/usr/share/nginx/html:ro
+    networks:
+      - newt_expose
+  lan-portal-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: lan-portal-api:latest
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    networks:
+      - newt_expose
+    volumes:
+      - ./data:/app/data
+    
+networks:
+  newt_expose:
+    external: true
